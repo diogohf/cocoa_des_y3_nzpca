@@ -1,7 +1,7 @@
 #data_file = 2pt_NG_mcal_1101.txt
 data_file = des_y1_theory_all_cosmic_shear.modelvector
 cov_file = COV2_Y1_mcal_v04.17_3column_rr
-mask_file = mask_Y1_mcal
+mask_file = mask_Y1_mcal_all_cs
 nz_lens_file = lens.nz
 nz_source_file = source.nz
 lensing_overlap_cut = 0.0015
@@ -11,3 +11,4 @@ IA_model = 4
 n_theta = 20
 theta_min_arcmin = 2.5
 theta_max_arcmin = 250.
+baryon_pca_file = pca.txt
