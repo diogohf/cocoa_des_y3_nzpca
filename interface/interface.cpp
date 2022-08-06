@@ -90,6 +90,7 @@ void cpp_initial_setup()
 
   // use_flat_sky
   like.use_full_sky_shear = 1;
+  
   like.use_full_sky_ggl = 1;
   like.use_full_sky_clustering = 1;
   like.use_full_sky_gk = 1;

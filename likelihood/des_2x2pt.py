@@ -3,27 +3,27 @@ import cosmolike_des_y3_interface as ci
 import numpy as np
 
 class des_2x2pt(_cosmolike_prototype_base):
-	# ------------------------------------------------------------------------
-	# ------------------------------------------------------------------------
-	# ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
 
-	def initialize(self):
-		super(des_2x2pt,self).initialize(probe="2x2pt")
+  def initialize(self):
+    super(des_2x2pt,self).initialize(probe="2x2pt")
 
-	# ------------------------------------------------------------------------
-	# ------------------------------------------------------------------------
-	# ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
 
-	def logp(self, **params_values):
+  def logp(self, **params_values):
     if self.create_baryon_pca:
       self.generate_baryonic_PCA(**params_values)
       self.force_cache_false = True
 
-		self.set_cosmo_related()
+    self.set_cosmo_related()
 
-		self.set_lens_related(**params_values)
+    self.set_lens_related(**params_values)
 
-		self.set_source_related(**params_values)
+    self.set_source_related(**params_values)
 
     if self.create_baryon_pca:
       self.force_cache_false = False
@@ -45,5 +45,5 @@ class des_2x2pt(_cosmolike_prototype_base):
       fmt = '%d', '%1.8e'
       np.savetxt(self.print_datavector_file, out, fmt = fmt)
 
-		return self.compute_logp(datavector)
+    return self.compute_logp(datavector)
 
