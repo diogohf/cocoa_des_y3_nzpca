@@ -4,6 +4,8 @@ stop_at_error: True
 
 likelihood:
   des_y3.des_3x2pt:
+  #des_y3.des_xi_ggl:
+  #des_y3.des_xi_gg:
     path: ./external_modules/data/des_y3
     data_file: DES_Y1_real.dataset
     
