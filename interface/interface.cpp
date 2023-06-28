@@ -90,7 +90,6 @@ void cpp_initial_setup()
 
   // use_flat_sky
   like.use_full_sky_shear = 1;
-  
   like.use_full_sky_ggl = 1;
   like.use_full_sky_clustering = 1;
   like.use_full_sky_gk = 1;
@@ -176,6 +175,14 @@ void cpp_init_probes(std::string possible_probes)
 
     spdlog::info("\x1b[90m{}\x1b[0m: {} = {} selected", "init_probes",
       "possible_probes", "xi + ggl (2x2pt)");
+  }
+  else if (possible_probes.compare("xi_gg") == 0)
+  {
+    like.shear_shear = 1;
+    like.pos_pos = 1;
+
+    spdlog::info("\x1b[90m{}\x1b[0m: {} = {} selected", "init_probes",
+      "possible_probes", "xi + gg (2x2pt)");
   }
 /*
   else if (possible_probes.compare("5x2pt") == 0)

@@ -1,0 +1,13 @@
+data_file = 2pt_NG_mcal_1101.txt
+cov_file = Y1_COV.txt
+mask_file = mask_Y1_mcal
+nz_lens_file = Y1_nz_lens.txt
+nz_source_file = Y1_nz_source.txt
+lensing_overlap_cut = 0.0015
+lens_ntomo = 5
+source_ntomo = 4
+n_theta = 20
+IA_model = 4
+theta_min_arcmin = 2.5
+theta_max_arcmin = 250.
+#baryon_pca_file = y1pca.txt

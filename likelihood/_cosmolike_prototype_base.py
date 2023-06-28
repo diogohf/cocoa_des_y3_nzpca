@@ -9,7 +9,7 @@ import time
 import os.path
 
 # Local
-from cobaya.likelihoods._base_classes import _DataSetLikelihood
+from cobaya.likelihoods.base_classes import DataSetLikelihood
 from cobaya.log import LoggedError
 from getdist import IniFile
 
@@ -68,7 +68,7 @@ default_chi = np.array([
    9533.114299897283,9554.700147330219,9575.985713926271
  ])
 
-class _cosmolike_prototype_base(_DataSetLikelihood):
+class _cosmolike_prototype_base(DataSetLikelihood):
   # ------------------------------------------------------------------------
   # ------------------------------------------------------------------------
   # ------------------------------------------------------------------------
@@ -131,7 +131,7 @@ class _cosmolike_prototype_base(_DataSetLikelihood):
 
     ci.initial_setup()
     ci.init_accuracy_boost(self.accuracyboost, self.samplingboost, self.integration_accuracy)
-    
+
     ci.init_probes(possible_probes=self.probe)
 
     ci.init_binning(self.ntheta, self.theta_min_arcmin, self.theta_max_arcmin)

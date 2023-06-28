@@ -5,8 +5,11 @@ stop_at_error: False
 likelihood:
   des_y3.des_cosmic_shear:
     path: ./external_modules/data/des_y3
-    print_datavector: False
-    print_datavector_file: "./projects/des_y3/chains/des_y3_theory_cosmic_shear.modelvector"
+    data_file: DES_Y3_real.dataset
+    accuracyboost: 1.0
+    samplingboost: 1.0
+    integration_accuracy: 0 # integer 0, 1 or 2
+    kmax_boltzmann: 10.0
 
 params:
   As_1e9:
@@ -21,9 +24,6 @@ params:
     latex: 10^9 A_\mathrm{s}
     drop: true
     renames: A
-  As:
-    value: 'lambda As_1e9: 1e-9 * As_1e9'
-    latex: A_\mathrm{s}
   ns:
     prior:
       min: 0.87
@@ -66,15 +66,6 @@ params:
     proposal: 0.02
     latex: \Omega_\mathrm{m}
     drop: true
-  mnu:
-    prior:
-      min: 0.06
-      max: 0.6
-    ref:
-      dist: norm
-      loc: 0.25
-      scale: 0.1
-    proposal: 0.05
   w0pwa:
     prior:
       min: -5 
@@ -96,6 +87,115 @@ params:
       scale: 0.05
     proposal: 0.05
     latex: w_{0,\mathrm{DE}}
+  mnu:
+    value: 0.06
+  tau:
+    value: 0.0697186
+    latex: \tau_\mathrm{reio}
+  # ---------------------------------------------------------------------------------------
+  # DES-Y3 CS nuissance parameter Start
+  # ---------------------------------------------------------------------------------------
+  DES_DZ_S1:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.018
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.018
+    proposal: 0.005
+    latex: \Delta z_\mathrm{s,DES}^1
+  DES_DZ_S2:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.015
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.015
+    proposal: 0.005
+    latex: \Delta z_\mathrm{s,DES}^2
+  DES_DZ_S3:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.011
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.011
+    proposal: 0.005
+    latex: \Delta z_\mathrm{s,DES}^3
+  DES_DZ_S4:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.017
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.017
+    proposal: 0.005
+    latex: \Delta z_\mathrm{s,DES}^4
+  DES_M1:
+    prior:
+      dist: norm
+      loc: -0.006
+      scale: 0.009
+    ref:
+      dist: norm
+      loc: -0.006
+      scale: 0.009
+    proposal: 0.004
+    latex: m_\mathrm{DES}^1
+  DES_M2:
+    prior:
+      dist: norm
+      loc: -0.02
+      scale: 0.008
+    ref:
+      dist: norm
+      loc: -0.02
+      scale: 0.008
+    proposal: 0.004
+    latex: m_\mathrm{DES}^2
+  DES_M3:
+    prior:
+      dist: norm
+      loc: -0.024
+      scale: 0.008
+    ref:
+      dist: norm
+      loc: -0.024
+      scale: 0.008
+    proposal: 0.004
+    latex: m_\mathrm{DES}^3
+  DES_M4:
+    prior:
+      dist: norm
+      loc: -0.037
+      scale: 0.008
+    ref:
+      dist: norm
+      loc: -0.037
+      scale: 0.008
+    proposal: 0.003
+    latex: m_\mathrm{DES}^4
+  # ---------------------------------------------------------------------------------------
+  # DES-Y3 CS nuissance parameter End
+  # ---------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------
+  # ------------------------------------- DERIVED PARAMETERS ------------------------------
+  # ---------------------------------------------------------------------------------------
+  # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa FROM DERIVED PARAMETERS
+  # WARNING: DO NOT REMOVE THE DROP FLAG FROM omegab/omegam/As_1e9/w0pwa
+  # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
+  # --------------------------------------------------------------------------------------- 
+  As:
+    value: 'lambda As_1e9: 1e-9 * As_1e9'
+    latex: A_\mathrm{s}
   wa:
     value: 'lambda w0pwa, w: w0pwa - w'
     latex: w_{a,\mathrm{DE}}
@@ -105,13 +205,33 @@ params:
   omegach2:
     value: 'lambda omegam, omegab, mnu, H0: (omegam-omegab)*(H0/100)**2-(mnu*(3.046/3)**0.75)/94.0708'
     latex: \Omega_\mathrm{c} h^2
-  tau:
-    value: 0.0697186
-    latex: \tau_\mathrm{reio}
+  omegal:
+    latex: \Omega_\Lambda
+  omegamh2:
+    derived: 'lambda omegam, H0: omegam*(H0/100)**2'
+    latex: \Omega_\mathrm{m} h^2
   sigma8:
     latex: \sigma_8
-  DES_BARYON_Q1:
-    value: 0.0
+  s8h5:
+    derived: 'lambda sigma8, H0: sigma8*(H0*1e-2)**(-0.5)'
+    latex: \sigma_8/h^{0.5}
+  s8omegamp5:
+    derived: 'lambda sigma8, omegam: sigma8*omegam**0.5'
+    latex: \sigma_8 \Omega_\mathrm{m}^{0.5}
+  s8omegamp25:
+    derived: 'lambda sigma8, omegam: sigma8*omegam**0.25'
+    latex: \sigma_8 \Omega_\mathrm{m}^{0.25}
+  age:
+    latex: '{\rm{Age}}/\mathrm{Gyr}'
+  rdrag:
+    latex: r_\mathrm{drag}
+  yheused:
+    latex: Y_P^\mathrm{BBN}
+  omegan2:
+    latex: \Omega_\mathrm{\\nu} h^2
+  omegan:
+    derived: 'lambda omegan2, H0: omegan2/((H0/100)**2)'
+    latex: \Omega_\mathrm{\\nu}
 
 theory:
   camb:
@@ -119,8 +239,8 @@ theory:
     use_renames: True
     extra_args:
       halofit_version: takahashi
-      AccuracyBoost: 1.15
-      lens_potential_accuracy: 1.1
+      AccuracyBoost: 1.05
+      lens_potential_accuracy: 1
       num_massive_neutrinos: 1
       nnu: 3.046
       dark_energy_model: ppf
@@ -142,7 +262,11 @@ sampler:
     # ---------------------------------------------------------------------
     learn_proposal: True
     # Don't learn if convergence better than...
-    learn_proposal_Rminus1_min: 0.03
+    learn_proposal_Rminus1_min: 0.035
+    # Don't learn if convergence is worse than...
+    learn_proposal_Rminus1_max: 200
+    # (even earlier if a param is not in the given covariance matrix)
+    learn_proposal_Rminus1_max_early: 30.
     # ---------------------------------------------------------------------
     # ---------------------------------------------------------------------
     # Convergence and stopping
@@ -162,21 +286,21 @@ sampler:
     # ---------------------------------------------------------------------
     measure_speeds: False
     drag: False
-    oversample_power: 1.0
+    oversample_power: 0.3
     oversample_thin: True
     blocking:
       - [1,
           [
-            As_1e9, ns, H0, omegab, omegam, mnu, w0pwa, w
+            As_1e9, ns, H0, omegab, omegam, w0pwa, w
           ]
         ]
-      - [10,
+      - [6,
           [
             DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, DES_A1_1, DES_A1_2,
             DES_A2_1, DES_A2_2, DES_BTA_1
           ]
         ]
-      - [25,
+      - [15,
           [
             DES_M1, DES_M2, DES_M3, DES_M4
           ]

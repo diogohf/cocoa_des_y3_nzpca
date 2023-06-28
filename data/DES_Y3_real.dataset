@@ -1,0 +1,13 @@
+data_file = Y3_unblinded_final.txt
+cov_file = cov_unblinded_final.txt
+mask_file = 3x2pt_baseline.mask
+nz_lens_file = nz_lens_Y3_unblinded_final.txt
+nz_source_file = nz_source_Y3_unblinded_final.txt
+lensing_overlap_cut = 0.0015
+lens_ntomo = 5
+source_ntomo = 4
+n_theta = 20
+IA_model = 6
+theta_min_arcmin = 2.5
+theta_max_arcmin = 250.
+#baryon_pca_file = pca.txt
