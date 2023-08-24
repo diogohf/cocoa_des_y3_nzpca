@@ -92,9 +92,12 @@ params:
   tau:
     value: 0.0697186
     latex: \tau_\mathrm{reio}
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # DES-Y3 3x2pt nuissance parameter begins
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # DES-Y3 SOURCE VALUES FROM TABLE I, PAGE 11 of 2105.13549
+  # ----------------------------------------------------------------------------
   DES_DZ_S1:
     prior:
       dist: norm
@@ -183,7 +186,59 @@ params:
       scale: 0.008
     proposal: 0.003
     latex: m_\mathrm{DES}^4
- # Lensing photo-z errors
+  DES_A1_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: 0.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^1
+  DES_A1_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^2
+  DES_A2_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.36
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{2-IA,DES}^1
+  DES_A2_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -2.5
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{2-IA,DES}^2
+  DES_BTA_1:
+    prior:
+      min: 0
+      max: 2
+    ref:
+      dist: norm
+      loc: 1
+      scale: 0.15
+    proposal: 0.1
+  # ----------------------------------------------------------------------------
+  # DES-Y3 LENS VALUES FROM TABLE IV, PAGE 34 of 2105.13549
+  # ----------------------------------------------------------------------------
+  # Lensing photo-z errors
   DES_DZ_L1:
     prior:
       dist: norm
@@ -239,6 +294,10 @@ params:
       scale: 0.01
     proposal: 0.005
     latex: \Delta z_\mathrm{l,DES}^5
+  # ----------------------------------------------------------------------------
+  # DES-Y3 LENS VALUES FROM TABLE IV, PAGE 34 of 2105.13549
+  # Table IV adopts Cosmolike convention BMAG_COSMOLIKE = 2 BMAG_COSMOSIS - 1
+  # ----------------------------------------------------------------------------
   DES_BMAG_1:
     value: 0.63
     latex: b_\mathrm{BMAG-DES}^1
@@ -254,6 +313,24 @@ params:
   DES_BMAG_5:
     value: 1.93
     latex: b_\mathrm{BMAG-DES}^5
+  # ----------------------------------------------------------------------------
+  # POINT MASS MARGINALIZATION (not following DES paper here)
+  # ----------------------------------------------------------------------------
+  DES_PM1:
+    value: 0.0
+    latex: PM_\mathrm{DES}^1
+  DES_PM2:
+    value: 0.0
+    latex: PM_\mathrm{DES}^2
+  DES_PM3:
+    value: 0.0
+    latex: PM_\mathrm{DES}^3
+  DES_PM4:
+    value: 0.0
+    latex: PM_\mathrm{DES}^4
+  DES_PM5:
+    value: 0.0
+    latex: PM_\mathrm{DES}^5
   # ---------------------------------------------------------------------------------------
   # DES-Y3 3x2pt nuissance parameter End
   # ---------------------------------------------------------------------------------------
@@ -357,7 +434,7 @@ sampler:
     # ---------------------------------------------------------------------
     measure_speeds: False
     drag: False
-    oversample_power: 0.3
+    oversample_power: 0.2
     oversample_thin: True
     blocking:
       - [1,
@@ -365,16 +442,17 @@ sampler:
             As_1e9, ns, H0, omegab, omegam, w0pwa, w
           ]
         ]
-      - [3,
+      - [2,
           [
-            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, DES_A1_1, DES_A1_2,
-            DES_A2_1, DES_A2_2, DES_BTA_1, DES_B1_1, DES_B1_2, DES_B1_3, DES_B1_4, DES_B1_5,
+            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, 
+            DES_A1_1, DES_A1_2, DES_A2_1, DES_A2_2, DES_BTA_1, 
+            DES_B1_1, DES_B1_2, DES_B1_3, DES_B1_4, DES_B1_5,
             DES_DZ_L1, DES_DZ_L2, DES_DZ_L3, DES_DZ_L4, DES_DZ_L5
           ]
         ]
-      - [15,
+      - [20,
           [
-            DES_M1, DES_M2, DES_M3, DES_M4, DES_PM1, DES_PM2, DES_PM3, DES_PM4, DES_PM5
+            DES_M1, DES_M2, DES_M3, DES_M4, 
           ]
         ]
     # ---------------------------------------------------------------------
