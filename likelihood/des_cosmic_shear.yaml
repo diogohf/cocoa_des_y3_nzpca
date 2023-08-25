@@ -2,8 +2,8 @@ path: null
 data_file: DES_Y3.dataset
 accuracyboost: 1.0
 samplingboost: 1.0
-integration_accuracy: 0 # integer 0, 1 or 2
-kmax_boltzmann: 10.0
+integration_accuracy: 1
+kmax_boltzmann: 5.0
 speed: 4
 
 print_intermediate_products: False
@@ -18,4 +18,4 @@ filename_baryon_pca: "./project/des_y3"
 print_datavector: False
 print_datavector_file: "./projects/des_y3/chains/des_y3_theory_cosmic_shear.modelvector"
 
-params: !defaults [params_des_cosmic_shear]
+params: !defaults [params_des_source]

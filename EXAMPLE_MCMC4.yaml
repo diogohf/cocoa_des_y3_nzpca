@@ -7,9 +7,8 @@ likelihood:
     path: ./external_modules/data/des_y3
     data_file: DES_Y1_real.dataset
     accuracyboost: 1.0
-    samplingboost: 1.0
-    integration_accuracy: 0 # integer 0, 1 or 2
-    kmax_boltzmann: 10.0
+    integration_accuracy: 0
+    kmax_boltzmann: 5.0
 
 params:
   As_1e9:
@@ -183,13 +182,33 @@ params:
       scale: 0.023
     proposal: 0.005
     latex: m_\mathrm{DES}^4
-  DES_A2_1: #TATT, not used for Y1
+  DES_A1_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: 0.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^1
+  DES_A1_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^2
+  DES_A2_1: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^1 
-  DES_A2_2: #TATT, not used for Y1
+  DES_A2_2: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^2
-  DES_BTA_1: #TATT, not used for Y1
+  DES_BTA_1: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
     value: 1.0
     latex: A_\mathrm{BTA-IA,DES}^1
  # Lensing photo-z errors
@@ -248,6 +267,27 @@ params:
       scale: 0.01
     proposal: 0.005
     latex: \Delta z_\mathrm{l,DES}^5
+  # ----------------------------------------------------------------------------
+  # Cosmolike convention BMAG_COSMOLIKE = 2 BMAG_COSMOSIS - 1
+  # ----------------------------------------------------------------------------
+  DES_BMAG_1:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^1
+  DES_BMAG_2:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^2
+  DES_BMAG_3:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^3
+  DES_BMAG_4:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^4
+  DES_BMAG_5:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^5
+  # ----------------------------------------------------------------------------
+  # POINT MASS MARGINALIZATION
+  # ----------------------------------------------------------------------------
   DES_PM1:
     value: 0.0
     latex: PM_\mathrm{DES}^1
@@ -263,21 +303,6 @@ params:
   DES_PM5:
     value: 0.0
     latex: PM_\mathrm{DES}^5
-  DES_BMAG_1:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^1
-  DES_BMAG_2:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^2
-  DES_BMAG_3:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^3
-  DES_BMAG_4:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^4
-  DES_BMAG_5:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^5
   # ---------------------------------------------------------------------------------------
   # DES-Y1 3x2pt nuissance parameter End
   # ---------------------------------------------------------------------------------------
@@ -334,7 +359,7 @@ theory:
     use_renames: True
     extra_args:
       halofit_version: takahashi
-      AccuracyBoost: 1.1
+      AccuracyBoost: 1.05
       lens_potential_accuracy: 1.0
       num_massive_neutrinos: 1
       nnu: 3.046
@@ -381,7 +406,7 @@ sampler:
     # ---------------------------------------------------------------------
     measure_speeds: False
     drag: False
-    oversample_power: 0.3
+    oversample_power: 0.2
     oversample_thin: True
     blocking:
       - [1,
@@ -391,12 +416,13 @@ sampler:
         ]
       - [3,
           [
-            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, DES_A1_1, DES_A1_2,
+            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, 
+            DES_A1_1, DES_A1_2,
             DES_B1_1, DES_B1_2, DES_B1_3, DES_B1_4, DES_B1_5,
             DES_DZ_L1, DES_DZ_L2, DES_DZ_L3, DES_DZ_L4, DES_DZ_L5
           ]
         ]
-      - [15,
+      - [20,
           [
             DES_M1, DES_M2, DES_M3, DES_M4
           ]

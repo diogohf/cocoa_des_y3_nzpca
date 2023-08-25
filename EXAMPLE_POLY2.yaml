@@ -1,6 +1,6 @@
-timing: True
+timing: False
 debug: False
-stop_at_error: True
+stop_at_error: False
 
 likelihood:
   des_y3.des_3x2pt:
@@ -65,15 +65,6 @@ params:
     proposal: 0.02
     latex: \Omega_\mathrm{m}
     drop: true
-  mnu:
-    prior:
-      min: 0.06
-      max: 0.6
-    ref:
-      dist: norm
-      loc: 0.25
-      scale: 0.1
-    proposal: 0.05
   w0pwa:
     prior:
       min: -5 
@@ -95,6 +86,8 @@ params:
       scale: 0.05
     proposal: 0.05
     latex: w_{0,\mathrm{DE}}
+  mnu:
+    value: 0.06
   tau:
     value: 0.0697186
     latex: \tau_\mathrm{reio}
@@ -241,10 +234,10 @@ params:
       loc: 1
       scale: 0.15
     proposal: 0.1
- # ----------------------------------------------------------------------------
- # DES-Y3 LENS VALUES FROM TABLE IV, PAGE 34 of 2105.13549
- # ----------------------------------------------------------------------------
- # Lensing photo-z errors
+  # ----------------------------------------------------------------------------
+  # DES-Y3 LENS VALUES FROM TABLE IV, PAGE 34 of 2105.13549
+  # ----------------------------------------------------------------------------
+  # Lensing photo-z errors
   DES_DZ_L1:
     prior:
       dist: norm
@@ -337,13 +330,14 @@ params:
   DES_PM5:
     value: 0.0
     latex: PM_\mathrm{DES}^5
-  # ----------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------
   # DES-Y3 3x2pt nuissance parameter End
-  # ----------------------------------------------------------------------------
-  # ----------------------------------------------------------------------------
-  # -------------------------- DERIVED PARAMETERS ------------------------------
-  # ----------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------
+  # ------------------------------------- DERIVED PARAMETERS ------------------------------
+  # ---------------------------------------------------------------------------------------
   # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa FROM DERIVED PARAMETERS
+  # WARNING: DO NOT REMOVE THE DROP FLAG FROM omegab/omegam/As_1e9/w0pwa
   # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
   # --------------------------------------------------------------------------------------- 
   As:
@@ -392,7 +386,7 @@ theory:
     use_renames: True
     extra_args:
       halofit_version: takahashi
-      AccuracyBoost: 1.05
+      AccuracyBoost: 1.1
       lens_potential_accuracy: 1.0
       num_massive_neutrinos: 1
       nnu: 3.046
@@ -401,39 +395,32 @@ theory:
       k_per_logint: 20
 
 sampler:
-  evaluate:
-    N: 1
-    override:
-      As_1e9: 2.1
-      ns: 0.96605
-      H0: 67.32
-      omegab: 0.04
-      omegam: 0.3
-      mnu: 0.06
-      DES_DZ_S1: 0.0414632
-      DES_DZ_S2: 0.00147332
-      DES_DZ_S3: 0.0237035
-      DES_DZ_S4: -0.0773436
-      DES_M1: 0.0191832
-      DES_M2: -0.0431752
-      DES_M3: -0.034961
-      DES_M4: -0.0158096
-      DES_A1_1: 0.606102
-      DES_A1_2: -1.51541
-      DES_A2_1: -1.7938938475734911 
-      DES_A2_2: -1.5448080290038528
-      DES_BTA_1: 0.8154011496506723
-      DES_DZ_L1: 0.00457604
-      DES_DZ_L2: 0.000309875
-      DES_DZ_L3: 0.00855907
-      DES_DZ_L4: -0.00316269
-      DES_DZ_L5: -0.0146753
-      DES_B1_1: 1.72716
-      DES_B1_2: 1.65168
-      DES_B1_3: 1.61423
-      DES_B1_4: 1.92886
-      DES_B1_5: 2.11633
-      w0pwa: -0.9
-      w: -0.9
+  polychord:
+    path: null
+    nlive: 128
+    num_repeats: 2d
+    do_clustering: false
+    precision_criterion: 0.001
+    boost_posterior: 10
+    feedback: 2
+    blocking:
+      - [1,
+          [
+            As_1e9, ns, H0, omegab, omegam, w0pwa, w
+          ]
+        ]
+      - [2,
+          [
+            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, 
+            DES_A1_1, DES_A1_2, DES_A2_1, DES_A2_2, DES_BTA_1, 
+            DES_B1_1, DES_B1_2, DES_B1_3, DES_B1_4, DES_B1_5,
+            DES_DZ_L1, DES_DZ_L2, DES_DZ_L3, DES_DZ_L4, DES_DZ_L5
+          ]
+        ]
+      - [20,
+          [
+            DES_M1, DES_M2, DES_M3, DES_M4 
+          ]
+        ]
 
-output: ./projects/des_y3/chains/EXAMPLE_EVALUATE2
+output: ./projects/des_y3/chains/EXAMPLE_POLY2

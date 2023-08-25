@@ -4,11 +4,12 @@ stop_at_error: True
 
 likelihood:
   des_y3.des_3x2pt:
-  #des_y3.des_xi_ggl:
-  #des_y3.des_xi_gg:
     path: ./external_modules/data/des_y3
     data_file: DES_Y1_real.dataset
-    
+    accuracyboost: 1.0
+    integration_accuracy: 0
+    kmax_boltzmann: 5.0
+
 params:
   As_1e9:
     prior:
@@ -97,9 +98,9 @@ params:
   tau:
     value: 0.0697186
     latex: \tau_\mathrm{reio}
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # DES-Y1 3x2pt nuissance parameter begins
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   DES_DZ_S1:
     prior:
       dist: norm
@@ -188,13 +189,33 @@ params:
       scale: 0.023
     proposal: 0.005
     latex: m_\mathrm{DES}^4
-  DES_A2_1: #TATT, not used for Y1
+  DES_A1_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: 0.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^1
+  DES_A1_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^2
+  DES_A2_1: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^1 
-  DES_A2_2: #TATT, not used for Y1
+  DES_A2_2: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^2
-  DES_BTA_1: #TATT, not used for Y1
+  DES_BTA_1: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
     value: 1.0
     latex: A_\mathrm{BTA-IA,DES}^1
  # Lensing photo-z errors
@@ -253,6 +274,27 @@ params:
       scale: 0.01
     proposal: 0.005
     latex: \Delta z_\mathrm{l,DES}^5
+  # ----------------------------------------------------------------------------
+  # Cosmolike convention BMAG_COSMOLIKE = 2 BMAG_COSMOSIS - 1
+  # ----------------------------------------------------------------------------
+  DES_BMAG_1:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^1
+  DES_BMAG_2:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^2
+  DES_BMAG_3:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^3
+  DES_BMAG_4:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^4
+  DES_BMAG_5:
+    value: 0.0
+    latex: b_\mathrm{BMAG-DES}^5
+  # ----------------------------------------------------------------------------
+  # POINT MASS MARGINALIZATION
+  # ----------------------------------------------------------------------------
   DES_PM1:
     value: 0.0
     latex: PM_\mathrm{DES}^1
@@ -268,27 +310,12 @@ params:
   DES_PM5:
     value: 0.0
     latex: PM_\mathrm{DES}^5
-  DES_BMAG_1:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^1
-  DES_BMAG_2:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^2
-  DES_BMAG_3:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^3
-  DES_BMAG_4:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^4
-  DES_BMAG_5:
-    value: 1.0
-    latex: b_\mathrm{BMAG-DES}^5
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # DES-Y1 3x2pt nuissance parameter End
-  # ---------------------------------------------------------------------------------------
-  # ---------------------------------------------------------------------------------------
-  # ------------------------------------- DERIVED PARAMETERS ------------------------------
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # -------------------------- DERIVED PARAMETERS ------------------------------
+  # ----------------------------------------------------------------------------
   # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa FROM DERIVED PARAMETERS
   # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
   # --------------------------------------------------------------------------------------- 

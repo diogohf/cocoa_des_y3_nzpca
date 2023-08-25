@@ -7,9 +7,8 @@ likelihood:
     path: ./external_modules/data/des_y3
     data_file: DES_Y1_real.dataset
     accuracyboost: 1.0
-    samplingboost: 1.0
-    integration_accuracy: 0 # integer 0, 1 or 2
-    kmax_boltzmann: 10.0
+    integration_accuracy: 0
+    kmax_boltzmann: 5.0
 
 params:
   As_1e9:
@@ -92,9 +91,9 @@ params:
   tau:
     value: 0.0697186
     latex: \tau_\mathrm{reio}
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # DES-Y1 CS nuissance parameter Start
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   DES_DZ_S1:
     prior:
       dist: norm
@@ -183,13 +182,33 @@ params:
       scale: 0.023
     proposal: 0.005
     latex: m_\mathrm{DES}^4
-  DES_A2_1: #TATT, not used for Y1
+  DES_A1_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: 0.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^1
+  DES_A1_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^2
+  DES_A2_1: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^1 
-  DES_A2_2: #TATT, not used for Y1
+  DES_A2_2: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^2
-  DES_BTA_1: #TATT, not used for Y1
+  DES_BTA_1: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
     value: 1.0
     latex: A_\mathrm{BTA-IA,DES}^1
   # ---------------------------------------------------------------------------------------
@@ -295,7 +314,7 @@ sampler:
     # ---------------------------------------------------------------------
     measure_speeds: False
     drag: False
-    oversample_power: 0.3
+    oversample_power: 0.2
     oversample_thin: True
     blocking:
       - [1,
@@ -305,10 +324,11 @@ sampler:
         ]
       - [6,
           [
-            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, DES_A1_1, DES_A1_2
+            DES_DZ_S1, DES_DZ_S2, DES_DZ_S3, DES_DZ_S4, 
+            DES_A1_1, DES_A1_2
           ]
         ]
-      - [15,
+      - [20,
           [
             DES_M1, DES_M2, DES_M3, DES_M4
           ]
@@ -326,6 +346,5 @@ sampler:
     # ---------------------------------------------------------------------
     # ---------------------------------------------------------------------
     Rminus1_single_split: 4
-
 
 output: ./projects/des_y3/chains/EXAMPLE_MCMC3

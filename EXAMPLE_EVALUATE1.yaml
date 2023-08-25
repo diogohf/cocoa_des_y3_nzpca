@@ -7,9 +7,8 @@ likelihood:
     path: ./external_modules/data/des_y3
     data_file: DES_Y3_real.dataset
     accuracyboost: 1.0
-    samplingboost: 1.0
-    integration_accuracy: 0 # integer 0, 1 or 2
-    kmax_boltzmann: 10.0
+    integration_accuracy: 1
+    kmax_boltzmann: 5.0
 
 params:
   As_1e9:
@@ -99,9 +98,12 @@ params:
   tau:
     value: 0.0697186
     latex: \tau_\mathrm{reio}
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # DES-Y3 CS nuissance parameter Start
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # DES-Y3 SOURCE VALUES FROM TABLE I, PAGE 11 of 2105.13549
+  # ----------------------------------------------------------------------------
   DES_DZ_S1:
     prior:
       dist: norm
@@ -190,12 +192,61 @@ params:
       scale: 0.008
     proposal: 0.003
     latex: m_\mathrm{DES}^4
-  # ---------------------------------------------------------------------------------------
+  DES_A1_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: 0.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^1
+  DES_A1_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.7
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{1-IA,DES}^2
+  DES_A2_1:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -1.36
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{2-IA,DES}^1
+  DES_A2_2:
+    prior:
+      min: -5
+      max:  5
+    ref:
+      dist: norm
+      loc: -2.5
+      scale: 0.5
+    proposal: 0.5
+    latex: A_\mathrm{2-IA,DES}^2
+  DES_BTA_1:
+    prior:
+      min: 0
+      max: 2
+    ref:
+      dist: norm
+      loc: 1
+      scale: 0.15
+    proposal: 0.1
+  # ----------------------------------------------------------------------------
   # DES-Y3 CS nuissance parameter End
-  # ---------------------------------------------------------------------------------------
-  # ---------------------------------------------------------------------------------------
-  # ------------------------------------- DERIVED PARAMETERS ------------------------------
-  # ---------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # -------------------------- DERIVED PARAMETERS ------------------------------
+  # ----------------------------------------------------------------------------
   # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa FROM DERIVED PARAMETERS
   # WARNING: DO NOT REMOVE THE DROP FLAG FROM omegab/omegam/As_1e9/w0pwa
   # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
