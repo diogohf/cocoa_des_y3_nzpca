@@ -1,16 +1,17 @@
 #!/bin/bash
 
-#SBATCH --job-name=DES_MC3
-#SBATCH --output=DES_MC3-%A_%a.out
+#SBATCH --job-name=DES_MIN
+#SBATCH --output=DES_MIN-%A_%a.out
 #SBATCH --nodes=1
-#SBATCH --ntasks=4
-#SBATCH --ntasks-per-node=4
-#SBATCH --ntasks-per-socket=2
-#SBATCH --cpus-per-task=8
-#SBATCH --time=120:00:00
-#SBATCH --partition=standard
-#SBATCH --qos=qual_qos_timeifler
+#SBATCH --ntasks=28
+#SBATCH --ntasks-per-socket=14
+#SBATCH --ntasks-per-node=28
+#SBATCH --cpus-per-task=3
+#SBATCH --time=50:00:00
+#SBATCH --partition=high_priority
+#SBATCH --qos=user_qos_timeifler
 #SBATCH --account=timeifler
+#SBATCH --exclusive
 
 # Clear the environment from any previously loaded modules
 module purge > /dev/null 2>&1
@@ -28,8 +29,6 @@ cd $SLURM_SUBMIT_DIR
 conda activate cocoapy38
 source start_cocoa
 
-echo Cocoa Conda environment Activated
-
 export OMP_PROC_BIND=close
 if [ -n "$SLURM_CPUS_PER_TASK" ]; then
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
@@ -37,4 +36,4 @@ else
   export OMP_NUM_THREADS=1
 fi
 
-mpirun -n ${SLURM_NTASKS} --oversubscribe --mca btl vader,tcp,self  --bind-to core:overload-allowed --map-by numa:pe=${OMP_NUM_THREADS} cobaya-run ./projects/des_y3/EXAMPLE_MCMC${SLURM_ARRAY_TASK_ID}.yaml -r
+mpirun -n ${SLURM_NTASKS} --oversubscribe --mca btl vader,tcp,self --bind-to core:overload-allowed --map-by numa:pe=${OMP_NUM_THREADS} cobaya-run ./projects/des_y3/EXAMPLE_MIN${SLURM_ARRAY_TASK_ID}.yaml -f
