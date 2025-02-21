@@ -4,11 +4,18 @@ stop_at_error: True
 
 likelihood:
   des_y3.des_3x2pt:
+  #des_y3.des_2x2pt:
+  #des_y3.des_xi_gg:
+  #des_y3.des_xi_ggl:
     path: ./external_modules/data/des_y3
-    data_file: DES_Y3_real.dataset
+    data_file: des_y3_real.dataset
     accuracyboost: 1.0
     integration_accuracy: 1
-    kmax_boltzmann: 5.0
+    kmax_boltzmann: 10.0
+    # 1 EE2, 2 Halofit
+    non_linear_emul: 2
+    IA_model: 1
+    IA_redshift_evolution: 3
 
 params:
   As_1e9:
@@ -392,7 +399,7 @@ theory:
     use_renames: True
     extra_args:
       halofit_version: takahashi
-      AccuracyBoost: 1.05
+      AccuracyBoost: 1.1
       lens_potential_accuracy: 1.0
       num_massive_neutrinos: 1
       nnu: 3.046

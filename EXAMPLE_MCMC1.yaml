@@ -5,10 +5,14 @@ stop_at_error: False
 likelihood:
   des_y3.des_cosmic_shear:
     path: ./external_modules/data/des_y3
-    data_file: DES_Y3_real.dataset
+    data_file: des_y3_real.dataset
     accuracyboost: 1.0
-    integration_accuracy: 1
+    integration_accuracy: 0
     kmax_boltzmann: 5.0
+    # 1 EE2, 2 Halofit
+    non_linear_emul: 2
+    IA_model: 1
+    IA_redshift_evolution: 3
 
 params:
   As_1e9:

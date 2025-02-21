@@ -5,10 +5,14 @@ stop_at_error: True
 likelihood:
   des_y3.des_cosmic_shear:
     path: ./external_modules/data/des_y3
-    data_file: DES_Y1_real.dataset
+    data_file: des_y1_real.dataset
     accuracyboost: 1.0
     integration_accuracy: 0
     kmax_boltzmann: 5.0
+    # 1 EE2, 2 Halofit
+    non_linear_emul: 2
+    IA_model: 0
+    IA_redshift_evolution: 3
 
 params:
   As_1e9:
@@ -209,14 +213,14 @@ params:
       scale: 0.5
     proposal: 0.5
     latex: A_\mathrm{1-IA,DES}^2
-  DES_A2_1: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
+  DES_A2_1: #TATT, not used for Y1
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^1 
-  DES_A2_2: #TATT, not used for Y1  (IA = 4 on cosmolike which does't even consider these params)
+  DES_A2_2: #TATT, not used for Y1 
     value: 0.0
     latex: A_\mathrm{2-IA,DES}^2
-  DES_BTA_1: #TATT, not used for Y1 (IA = 4 on cosmolike which does't even consider these params)
-    value: 1.0
+  DES_BTA_1: #TATT, not used for Y1
+    value: 0.0
     latex: A_\mathrm{BTA-IA,DES}^1
   # ---------------------------------------------------------------------------------------
   # DES-Y1 CS nuissance parameter End
