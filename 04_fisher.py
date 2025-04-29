@@ -24,7 +24,7 @@ def file_eps(tbin,leri,nzi):
     """
     `tbin`:: tomographich bin. DES = 0,1,2 or 3
     `nzi` :: n(z[i]) where i = 0,...,299
-    `leri`:: left: xi(ni-step) of right: xi(ni+step)
+    `leri`:: left: xi(ni-step), right: xi(ni+step)
     """
     return "des_y3_real_bin%d_%s_nz%d.dataset" % (tbin,leri,nzi)
 
@@ -67,8 +67,8 @@ def compute_derivs():
 
     np.savetxt("./projects/cocoa_des_y3_nzpca/derivs.txt", deriv)
 
-compute_xip()    ## MUST `SBATCH` FROM cocoa_photoz/Cocoa
-compute_derivs() ## MUST `SBATCH` FROM cocoa_photoz/Cocoa
+# compute_xip()    ## MUST `sbatch` FROM cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED
+# compute_derivs() ## MUST `sbatch` FROM cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED
 
 def derivs_cocoa_vs_cosmosis():
     derivs_cocoa    = np.loadtxt('./derivs.txt')
@@ -92,6 +92,7 @@ def derivs_cocoa_vs_cosmosis():
 
     plt.savefig("./jacobian_cocoa.pdf")
 
+derivs_cocoa_vs_cosmosis()
 
 # data_file = file_eps(bins=bins,leri=leri,row=row)
 # fico.init_cosmolike(path=path_eps, data_file=data_file) ## DHFS - will take data directly from `data` folder, not from `external_modules/data` folder
