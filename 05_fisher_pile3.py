@@ -1,6 +1,9 @@
 """
 Diogo H F de Souza - Tuesday April 29 2025
 
+A semi apples-to-apples comparison. Using FIDUCIAL_DVv5.0_lingbias27-11-24_Tz_WZ_bqr_0d01_pile3.fits
+'semi' because the solely different is derivative method: CosmoSIS (5pt stencil). Here (del xi_p/del n)
+
 Integrating fisher pipeline with CoCoA
 OBS:to run this code:
     cd cocoa_photoz/Cocoa
@@ -21,7 +24,7 @@ def file_eps(tbin,leri,nzi):
     """
     `tbin`:: tomographich bin. DES = 0,1,2 or 3
     `nzi` :: n(z[i]) where i = 0,...,299
-    `leri`:: left: xi(ni-step) of right: xi(ni+step)
+    `leri`:: left: xi(ni-step), right: xi(ni+step)
     """
     return "des_real_bin%d_%s_nz%d_pile3.dataset" % (tbin,leri,nzi)
 
@@ -29,7 +32,7 @@ def compute_xip():
     for leri in ["left", "right"]:
         xip_new = []
         for tbin in range(4):
-            for nzi in range(300):
+            for nzi in range(299):
                 data_file = file_eps(tbin=tbin,leri=leri,nzi=nzi)
                 print(data_file)
                 fico.init_cosmolike(path=path_eps, data_file=data_file) ## DHFS - will take data directly from `data` folder, not from `external_modules/data` folder
@@ -54,7 +57,7 @@ def compute_derivs():
 
     (nbins,ntheta) = xip_left.shape ## nbins = number of independend bins
     deriv = np.zeros((nbins,ntheta))
-    step = 0.01
+    step = 0.01 
 
     print(nbins,ntheta)
     for i in range(nbins):
@@ -64,11 +67,11 @@ def compute_derivs():
 
     np.savetxt("./projects/cocoa_des_y3_nzpca/derivs_pile3.txt", deriv)
 
-compute_xip()    ## MUST `SBATCH` FROM cocoa_photoz/Cocoa w/ (.loca)(cocoa) ACTIVATED
-compute_derivs() ## MUST `SBATCH` FROM cocoa_photoz/Cocoa w/ (.loca)(cocoa) ACTIVATED
+compute_xip()    ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
+compute_derivs() ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
 
 def derivs_cocoa_vs_cosmosis():
-    derivs_cocoa    = np.loadtxt('./derivs.txt')
+    derivs_cocoa    = np.loadtxt('./derivs_pile3.txt')
     derivs_cosmosis = np.loadtxt("/gpfs/projects/MirandaGroup/Diogo/ROMAN-NZ-PROJECT/PCA/JACOBIAN/derivatives2.txt")
     derivs_cocoa    = derivs_cocoa.reshape(-1,200)
 
@@ -88,3 +91,5 @@ def derivs_cocoa_vs_cosmosis():
     ax[1].set_title('Jacobian w/ CoCoA')
 
     plt.savefig("./jacobian_cocoa_pile3.pdf")
+
+# derivs_cocoa_vs_cosmosis()
