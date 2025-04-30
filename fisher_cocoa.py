@@ -1,6 +1,7 @@
 """
 Diogo H F de Souza Wednesday April 23 2025
-Modifications from EXAMPLE_EVALUATE1.ipynb
+
+Modified from EXAMPLE_EVALUATE1.ipynb
 """
 
 
@@ -511,3 +512,76 @@ def init_cosmolike(path = "../../external_modules/data/cocoa_des_y3_nzpca",data_
 ################################################################
 ################################################################
 
+def dataset_realization(path = None, data_file = None):
+    with open("%s/%s" %(path,data_file), "r") as f_ref :
+        lines = f_ref.readlines()
+        with open("%s/%s_realization" %(path,data_file), "w") as f_rel :
+            for line in lines:
+                if "nz_source_file" in line:
+                    nz_source_name = line.replace(" ", "").replace("nz_source_file=","").replace(".nz","").replace("\n","")
+                    name_new = "nz_source_file = %s_realization.nz\n" % (nz_source_name)
+                    f_rel.write(name_new)
+                else:
+                    f_rel.write(line)
+
+#     nz_ref = np.loadtxt("%s/%s.nz" % (path,nz_source_name))
+#     lz = nz_ref.shape[0] ## len(nz) = 300
+#     bins = nz_ref.shape[1] - 1 ## doesn't count the redshift column. DES = 4 bins
+#     total_nz = lz * bins
+#     z = nz_ref[:,0]
+#     nzs = nz_ref[:,1:]
+#     steps = [-0.01,0.01]
+#     steps_labels = ["left","right"]
+
+#     for step,leri in zip(steps,steps_labels):
+#         x = copy.copy(nzs) ## avoid memory issue
+#         for col in range(bins):
+#             for row in range(lz):
+#                 x[row][col] = nzs[row][col] + step ## shift nz at bin=col and z=row
+#                 y = np.array([np.stack(np.insert(x[i], 0, z[i])) for i in range(lz)]) ## add z back
+
+#         np.savetxt("./%s/%s_realization.nz"  % (path,nz_source_name), y) ## saves
+#         init_cosmolike(path=path, data_file="%s_realization" % (data_file)) ## DHFS - will take data directly from `data` folder, not from `external_modules/data` folder                
+#         (theta, xip, xim), xi_new = xi(), []
+#         (ntheta, ntomo, ntomo2) = xip.shape
+#         for i in range(ntomo):
+#             for j in range(ntomo):
+#                 if j>=i:
+#                     xip_new.append(xip[:,i,j])
+#         xip_new=np.array(xip_new)
+#         np.savetxt("./projects/cocoa_des_y3_nzpca/xip_%s.txt" % (leri), xip_new)
+
+#     for leri in ["left", "right"]:
+#         xip_new = []
+#         for tbin in range(4):
+#             for nzi in range(300):
+#                 data_file = file_eps(tbin=tbin,leri=leri,nzi=nzi)
+#                 print(data_file)
+#                 init_cosmolike(path=path_eps, data_file=data_file) ## DHFS - will take data directly from `data` folder, not from `external_modules/data` folder                
+#                 (theta, xip, xim) = xi()
+#                 (ntheta, ntomo, ntomo2) = xip.shape
+#                 for i in range(ntomo):
+#                     for j in range(ntomo):
+#                         if j>=i:
+#                             xip_new.append(xip[:,i,j])
+#         xip_new=np.array(xip_new)
+#         np.savetxt("./projects/cocoa_des_y3_nzpca/xip_%s.txt" % leri, xip_new)
+#         print('-----------------------------------')
+#         print('------------SAVED XIP_%s-----------' % leri)
+#         print('-----------------------------------')
+
+# def compute_derivs():
+#     xip_left = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_left.txt')
+#     xip_right = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_right.txt')
+
+#     (nbins,ntheta) = xip_left.shape ## nbins = number of independend bins
+#     deriv = np.zeros((nbins,ntheta))
+#     step = 0.01
+
+#     print(nbins,ntheta)
+#     for i in range(nbins):
+#         print(i)
+#         for j in range(ntheta):
+#             deriv[i,j] = (xip_right[i,j] - xip_left[i,j]) / (2*step)
+
+#     np.savetxt("./projects/cocoa_des_y3_nzpca/derivs.txt", deriv)
