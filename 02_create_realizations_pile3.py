@@ -15,22 +15,27 @@ from astropy.io import fits
 ###################################################################
 ### CONVERT DES DATA FORMAT TO COCOA/COSMOLIKE DATA FORMAT - START
 ###################################################################
-dvpile3 = './data_realizations_pile3/FIDUCIAL_DVv5.0_lingbias27-11-24_Tz_WZ_bqr_0d01_pile3.fits'
 
-hdul = fits.open(dvpile3)
-nz_source_des = np.array(hdul['nz_source'].data) ## nz in DES like format
-nz_lens_des = np.array(hdul['nz_lens'].data) ## nz in DES like format
-# covmat_des = np.array(hdul['COVMAT'].data) ## nz in DES like format
+def convert_nz_from_des_to_cocoa_format(dvdes):
+    ## Extract source and lens redshift distribution from DES data vector
+    try:
+        hdul = fits.open(dvdes)
+    except FileNotFoundError:    
+        print("Error: file %s not found" % (dvdes))
+    nz_source_des = np.array(hdul['nz_source'].data)
+    nz_lens_des = np.array(hdul['nz_lens'].data)
 
-def convert_dv_from_des_to_cocoa_format():
-    nz_source_cocoa = np.array([[nz_source_des[j][i] for i in [1,3,4,5,6]] for j in range(1,len(nz_source_des))]) ## nz in CoCoA like format
-    nz_lens_cocoa = np.array([[nz_lens_des[j][i] for i in [1,3,4,5,6]] for j in range(1,len(nz_lens_des))]) ## nz in CoCoA like format
+    ## Map DES nzs to NumPy array
+    nz_source_cocoa = np.array([[nz_source_des[j][i] for i in [1,3,4,5,6]] for j in range(1,len(nz_source_des))]) ## Outer loop: starting from 1 to exclude the first redshift where n_source(z)=0 | inner loop: starting from 1 to take the central redshift value.
+    nz_lens_cocoa = np.array([[nz_lens_des[j][i] for i in [1,3,4,5,6]] for j in range(1,len(nz_lens_des))]) ## Outer loop: starting from 1 to exclude the first redshift where n_lens(z)=0 | inner loop: starting from 1 to take the central redshift value.
 
+    ## Save w/ CoCoA .nz extension
     np.savetxt('./data_realizations_pile3/des_source_pile3.nz',nz_source_cocoa)
     np.savetxt('./data_realizations_pile3/des_lens_pile3.nz',nz_lens_cocoa)
     return 0        
 
-# convert_dv_from_des_to_cocoa_format()
+dvpile3 = './data_realizations_pile3/FIDUCIAL_DVv5.0_lingbias27-11-24_Tz_WZ_bqr_0d01_pile3.fits'
+# convert_nz_from_des_to_cocoa_format(dvdes=dvpile3)
 
 ###################################################################
 ### CONVERT DES DATA FORMAT TO COCOA/COSMOLIKE DATA FORMAT - END
@@ -39,7 +44,7 @@ def convert_dv_from_des_to_cocoa_format():
 nz_ref = np.loadtxt("./data_realizations_pile3/des_source_pile3.nz")
 
 lz = nz_ref.shape[0] ## len(nz) = 299
-bins = nz_ref.shape[1] - 1 ## doesn't count the redshift column. DES = 4 bins
+bins = nz_ref.shape[1] - 1 ## discount the redshift column. DES = 4 bins
 total_nz = lz * bins
 
 def make_dataset():
@@ -66,7 +71,7 @@ def make_sources():
             for row in range(lz):
                 x_left = copy.copy(nzs) ## avoid memory issue
                 x_left[row][col] = nzs[row][col] - step ## shift nz at bin=col and z=row
-                y_left = np.array([np.stack(np.insert(x_left[i], 0, z[i])) for i in range(lz)]) ## add z
+                y_left = np.array([np.stack(np.insert(x_left[i], 0, z[i])) for i in range(lz)]) ## add z back
                 np.savetxt("./data_realizations_pile3/des_source_bin%d_left_nz%d_pile3.nz"  % (col,row), y_left) ## saves
 
         for col in range(bins):

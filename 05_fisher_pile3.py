@@ -28,7 +28,7 @@ def file_eps(tbin,leri,nzi):
     """
     return "des_real_bin%d_%s_nz%d_pile3.dataset" % (tbin,leri,nzi)
 
-def compute_xip():
+def compute_xip(surname=""):
     for leri in ["left", "right"]:
         xip_new = []
         for tbin in range(4):
@@ -43,17 +43,14 @@ def compute_xip():
                         if j>=i:
                             xip_new.append(xip[:,i,j])
         xip_new=np.array(xip_new)
-        np.savetxt("./projects/cocoa_des_y3_nzpca/xip_%s_pile3.txt" % leri, xip_new)
-        print('-----------------------------------')
-        print('------------SAVED XIP_%s-----------' % leri)
-        print('-----------------------------------')
+        np.savetxt("./projects/cocoa_des_y3_nzpca/xip_%s_pile3_%s.txt" % (leri,surname), xip_new)
+        print('--------------------------------------')
+        print('------------XIP_%s_%s SAVED-----------' % (leri,surname))
+        print('--------------------------------------')
 
-# xip_left = np.loadtxt('./xip_left.txt')
-# print(xip_left.shape)
-
-def compute_derivs():
-    xip_left = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_left_pile3.txt')
-    xip_right = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_right_pile3.txt')
+def compute_derivs(surname=""):
+    xip_left = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_left_pile3_%s.txt' % surname)
+    xip_right = np.loadtxt('./projects/cocoa_des_y3_nzpca/xip_right_pile3_%s.txt' % surname)
 
     (nbins,ntheta) = xip_left.shape ## nbins = number of independend bins
     deriv = np.zeros((nbins,ntheta))
@@ -65,13 +62,14 @@ def compute_derivs():
         for j in range(ntheta):
             deriv[i,j] = (xip_right[i,j] - xip_left[i,j]) / (2*step)
 
-    np.savetxt("./projects/cocoa_des_y3_nzpca/derivs_pile3.txt", deriv)
+    np.savetxt("./projects/cocoa_des_y3_nzpca/derivs_pile3_%s.txt" % surname, deriv)
 
-compute_xip()    ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
-compute_derivs() ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
+surname = "ntheta26"
+compute_xip(surname=surname)    ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
+compute_derivs(surname=surname) ## !! MUST `sbatch` FROM ./cocoa_photoz/Cocoa w/ (.local)(cocoa) ACTIVATED !!
 
-def derivs_cocoa_vs_cosmosis():
-    derivs_cocoa    = np.loadtxt('./derivs_pile3.txt')
+def derivs_cocoa_vs_cosmosis(surname=""):
+    derivs_cocoa    = np.loadtxt('./derivs_pile3_%s.txt' % surname)
     derivs_cosmosis = np.loadtxt("/gpfs/projects/MirandaGroup/Diogo/ROMAN-NZ-PROJECT/PCA/JACOBIAN/derivatives2.txt")
     derivs_cocoa    = derivs_cocoa.reshape(-1,200)
 
@@ -90,6 +88,6 @@ def derivs_cocoa_vs_cosmosis():
     ax[1].yaxis.set_ticks_position('right')
     ax[1].set_title('Jacobian w/ CoCoA')
 
-    plt.savefig("./jacobian_cocoa_pile3.pdf")
+    plt.savefig("./jacobian_cocoa_pile3_%s.pdf" % surname)
 
-# derivs_cocoa_vs_cosmosis()
+# derivs_cocoa_vs_cosmosis(surname=surname)
